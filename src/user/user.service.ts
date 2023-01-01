@@ -1,18 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Prisma } from '@prisma/client';
+import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(REQUEST)
+    private readonly request: Request,
+  ) {}
+
   async login(account: string, password: string) {
-    const data = await this.prisma.user.findFirst({
+    return await this.prisma.user.findFirst({
       where: { account, password },
     });
-    if (data) {
-      // 颁发cookie
-      return true;
-    } else {
-      return false;
+  }
+
+  async getUserByAccount(account: string) {
+    return this.prisma.user.findUnique({
+      where: { account },
+    });
+  }
+
+  async register(parmas: Prisma.UserCreateInput) {
+    const user = await this.getUserByAccount(parmas.account);
+    if (user) {
+      throw new Error('该用户已存在');
     }
+    const { id } = await this.prisma.user.create({ data: parmas });
+    return id;
   }
 }

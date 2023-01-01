@@ -12,4 +12,10 @@ export class LoginDto {
     default: '123456',
   })
   password: string;
+
+  @ApiProperty({
+    required: false,
+    description: '用户名',
+  })
+  name?: string;
 }
