@@ -1,4 +1,5 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { LoginDto } from './index.dto';
@@ -7,13 +8,15 @@ import { UserService } from './user.service';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
   @Post('login')
   async login(@Body() { account, password }: LoginDto, @Res() res: Response) {
     const result = await this.userService.login(account, password);
+    console.log(result);
     if (!result) throw new Error('账号或密码错误');
-    res.cookie('blogAccessToken', 'abcdeft');
+    const blogAccessToken = this.jwtService.sign({ ...result });
+    res.cookie('blogAccessToken', blogAccessToken);
     res.json({
       ret: 0,
       msg: '登录成功',
