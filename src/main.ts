@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService, ConfigType } from '@nestjs/config';
 import { ExceptionFilter } from 'middleware/exception.filter';
 import Config from '../config';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,9 @@ async function bootstrap() {
   // config
   const configService = app.get<ConfigService>(ConfigService);
   const { port } = configService.get('config') as ConfigType<typeof Config>;
+
+  // parser cookies
+  app.use(cookieParser());
 
   // mount filter
   app.useGlobalFilters(new ExceptionFilter(configService));
