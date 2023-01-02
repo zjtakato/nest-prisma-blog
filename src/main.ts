@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { ExceptionFilter } from 'middleware/exception.filter';
+import Config from '../config';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // swagger
@@ -12,7 +14,7 @@ async function bootstrap() {
 
   // config
   const configService = app.get<ConfigService>(ConfigService);
-  const port = configService.get('config.port');
+  const { port } = configService.get('config') as ConfigType<typeof Config>;
 
   // mount filter
   app.useGlobalFilters(new ExceptionFilter(configService));
