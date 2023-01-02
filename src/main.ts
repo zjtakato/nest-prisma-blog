@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { ExceptionFilter } from 'middleware/exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // swagger
@@ -12,6 +13,9 @@ async function bootstrap() {
   // config
   const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get('config.port');
+
+  // mount filter
+  app.useGlobalFilters(new ExceptionFilter(configService));
 
   await app.listen(port).then(() => {
     console.log(`swagger running in http://localhost:${port}/api`);

@@ -4,5 +4,6 @@ export default registerAs('config', () => {
     port: 3000,
     jwtSecert: process.env.JWT_SECRET,
     jwtExpires: '60m',
+    env: process.env.NODE_ENV,
   };
 });
