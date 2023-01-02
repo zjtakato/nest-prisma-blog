@@ -14,6 +14,10 @@ export class ExceptionFilter implements NestExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const status = exception?.getStatus ? exception.getStatus() : 500;
+    if (exception.name !== 'Error') {
+      // 非响应异常
+      console.log(exception.stack);
+    }
     response.status(status).json({
       ret: -1,
       msg: this.config.env !== 'production' ? exception.message : 'error',
