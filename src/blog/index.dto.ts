@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Blog } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
-export class BlogDto implements Blog {
-  public id: number;
-  public createdAt: Date;
-  public updatedAt: Date;
-  public userId: number;
+export class BlogDto implements Partial<Prisma.BlogUncheckedCreateWithoutUserInput> {
+  @ApiProperty({
+    description: 'id-更新操作才上传',
+    default: 0,
+    required: false,
+  })
+  public id?: number;
 
   @ApiProperty({
     description: '标题',
@@ -15,4 +17,12 @@ export class BlogDto implements Blog {
     description: '内容',
   })
   public content: string;
+}
+
+export class BlogDeleteDto implements Partial<Prisma.BlogUncheckedCreateWithoutUserInput> {
+  @ApiProperty({
+    description: '博客id',
+    default: 0,
+  })
+  public id?: number;
 }
