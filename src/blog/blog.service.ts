@@ -7,8 +7,11 @@ import { SearchPaginationBase } from 'types/index.dto';
 export class BlogService {
   constructor(private readonly prismService: PrismaService) {}
 
-  async getBlogListByPage(params: SearchPaginationBase) {
+  async getBlogListByPage(params: SearchPaginationBase, userId: number) {
     return await this.prismService.blog.findMany({
+      where: {
+        userId: userId,
+      },
       skip: +params.pageSize * (+params.currentPage - 1),
       take: +params.pageSize,
     });
