@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -14,6 +15,7 @@ model User {
   name      String?   @db.VarChar(11)
   createdAt DateTime? @default(now()) @db.DateTime(0)
   updatedAt DateTime? @updatedAt @db.DateTime(0)
+  Blog      Blog[]
 }
 
 model Blog {
@@ -22,4 +24,8 @@ model Blog {
   content   String?   @db.Text
   createdAt DateTime? @default(now()) @db.DateTime(0)
   updatedAt DateTime? @updatedAt @db.DateTime(0)
+  userId    Int?
+  User      User?     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userId")
+
+  @@index([userId], map: "userId_idx")
 }
