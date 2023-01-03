@@ -41,4 +41,16 @@ export class BlogController {
       data: { id },
     };
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('deleteBlog')
+  async deleteBlog(@Body() body: BlogDeleteDto, @State() state: StateDto) {
+    const result = await this.blogService.deleteBlogById(body.id, state.id);
+    console.log(result);
+    return {
+      ret: 0,
+      msg: 'success',
+      data: { id: result.id },
+    };
+  }
 }

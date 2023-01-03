@@ -31,4 +31,13 @@ export class BlogService {
       data: paramas,
     });
   }
+
+  async deleteBlogById(id: number, userId: number) {
+    return await this.prismService.blog.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+  }
 }
