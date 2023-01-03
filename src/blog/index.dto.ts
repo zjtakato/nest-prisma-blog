@@ -26,3 +26,5 @@ export class BlogDeleteDto implements Partial<Prisma.BlogUncheckedCreateWithoutU
   })
   public id?: number;
 }
+
+export interface BlogGeneralDto extends Partial<Prisma.BlogUncheckedCreateInput> {}
