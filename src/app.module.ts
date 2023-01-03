@@ -6,7 +6,7 @@ import { UserModule } from './user/user.module';
 import config from '../config';
 import { JwtModule } from '@nestjs/jwt';
 import { BlogModule } from './blog/blog.module';
-import { PrismaModule } from './core/prisma/prisma.module';
+import { PrismaModule } from 'core/prisma/prisma.module';
 
 @Module({
   imports: [

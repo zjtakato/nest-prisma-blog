@@ -1,7 +1,7 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
-import { PrismaService } from 'src/core/prisma/prisma.service';
+import { PrismaService } from 'core/prisma/prisma.service';
 import { UserGeneralDto } from './index.dto';
 
 @Injectable({ scope: Scope.REQUEST })
