@@ -2,7 +2,7 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { LoginDto } from './index.dto';
+import { LoginSwaggerGeneralDto } from './index.dto';
 import { UserService } from './user.service';
 
 @ApiTags('user')
@@ -11,7 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
   @Post('login')
-  async login(@Body() { account, password }: LoginDto, @Res() res: Response) {
+  async login(@Body() { account, password }: LoginSwaggerGeneralDto, @Res() res: Response) {
     const result = await this.userService.login(account, password);
     if (!result) throw new Error('账号或密码错误');
     const blogAccessToken = this.jwtService.sign({ ...result });
@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Post('register')
-  async register(@Body() params: LoginDto) {
+  async register(@Body() params: LoginSwaggerGeneralDto) {
     const id = await this.userService.register(params);
     return {
       ret: 0,

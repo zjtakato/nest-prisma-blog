@@ -2,7 +2,7 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { PrismaService } from 'core/prisma/prisma.service';
-import { UserGeneralDto } from './index.dto';
+import { UserPrismaGeneralDto } from './index.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -24,7 +24,7 @@ export class UserService {
     });
   }
 
-  async register(parmas: UserGeneralDto) {
+  async register(parmas: UserPrismaGeneralDto) {
     const user = await this.getUserByAccount(parmas.account);
     if (user) {
       throw new Error('该用户已存在');
