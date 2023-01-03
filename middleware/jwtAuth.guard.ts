@@ -19,8 +19,8 @@ export class JwtAuthGuard implements CanActivate {
     const request = ctx.switchToHttp().getRequest();
     const { blogAccessToken } = request.cookies as CookiesDto;
     try {
-      const tokenData = this.jwtService.verify(blogAccessToken) as User;
-      request.tokenData = tokenData;
+      const state = this.jwtService.verify(blogAccessToken) as User;
+      request.state = state;
     } catch (error) {
       console.log(error.stack);
       throw new Error('登录态异常');
