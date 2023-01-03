@@ -8,10 +8,12 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  account  String  @unique(map: "account_UNIQUE") @db.VarChar(11)
-  password String  @db.VarChar(11)
-  name     String? @db.VarChar(11)
+  id        Int       @id @default(autoincrement())
+  account   String    @unique(map: "account_UNIQUE") @db.VarChar(11)
+  password  String    @db.VarChar(11)
+  name      String?   @db.VarChar(11)
+  createdAt DateTime? @default(now()) @db.DateTime(0)
+  updatedAt DateTime? @updatedAt @db.DateTime(0)
 }
 
 model Blog {
