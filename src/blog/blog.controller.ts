@@ -10,6 +10,8 @@ import { State, StateDto } from 'decorator/state.decorator';
 @Controller('blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
+
+  @UseGuards(JwtAuthGuard)
   @Get('getBlogList')
   async getBlogList(@Query() query: SearchPaginationBase, @State() state: StateDto) {
     const data = await this.blogService.getBlogListByPage(query, state.id);
