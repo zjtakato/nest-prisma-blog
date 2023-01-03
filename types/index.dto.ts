@@ -5,11 +5,11 @@ export class SearchPaginationBase {
     description: '当前页数',
     default: 1,
   })
-  currentPage?: number;
+  currentPage?: string;
 
   @ApiProperty({
     description: '页码',
     default: 10,
   })
-  pageSize?: number;
+  pageSize?: string;
 }
