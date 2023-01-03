@@ -19,7 +19,8 @@ export class BlogService {
   async createBlog(params: Prisma.BlogUncheckedCreateInput) {
     return await this.prismService.blog.create({
       data: {
-        ...params,
+        title: params.title,
+        content: params.content,
         userId: params.userId,
       },
     });
@@ -31,7 +32,10 @@ export class BlogService {
         id: id,
         userId: userId,
       },
-      data: paramas,
+      data: {
+        title: paramas.title,
+        content: paramas.content,
+      },
     });
   }
 
