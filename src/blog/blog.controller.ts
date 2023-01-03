@@ -3,7 +3,7 @@ import { SearchPaginationBase } from 'types/index.dto';
 import { JwtAuthGuard } from 'middleware/jwtAuth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { BlogService } from './blog.service';
-import { BlogSwaggerGeneralDto } from './index.dto';
+import { BlogUniversalDto } from './index.dto';
 import { State, StateDto } from 'decorator/state.decorator';
 
 @ApiTags('blog')
@@ -23,7 +23,7 @@ export class BlogController {
 
   @UseGuards(JwtAuthGuard)
   @Post('createBlog')
-  async createBlog(@Body() body: BlogSwaggerGeneralDto, @State() state: StateDto) {
+  async createBlog(@Body() body: BlogUniversalDto, @State() state: StateDto) {
     const { id } = await this.blogService.createBlog({ ...body, userId: state.id });
     return {
       ret: 0,
@@ -34,7 +34,7 @@ export class BlogController {
 
   @UseGuards(JwtAuthGuard)
   @Put('updateBlog')
-  async updateBlog(@Body() { id, ...body }: BlogSwaggerGeneralDto, @State() state: StateDto) {
+  async updateBlog(@Body() { id, ...body }: BlogUniversalDto, @State() state: StateDto) {
     await this.blogService.updateBlogById(id, state.id, body);
     return {
       ret: 0,
@@ -45,7 +45,7 @@ export class BlogController {
 
   @UseGuards(JwtAuthGuard)
   @Delete('deleteBlog')
-  async deleteBlog(@Body() body: BlogSwaggerGeneralDto, @State() state: StateDto) {
+  async deleteBlog(@Body() body: BlogUniversalDto, @State() state: StateDto) {
     const result = await this.blogService.deleteBlogById(body.id, state.id);
     console.log(result);
     return {

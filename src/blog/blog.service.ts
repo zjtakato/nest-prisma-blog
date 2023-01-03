@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'core/prisma/prisma.service';
 import { SearchPaginationBase } from 'types/index.dto';
-import { BlogPrismaGeneralDto } from './index.dto';
+import { BlogUniversalDto } from './index.dto';
 
 @Injectable()
 export class BlogService {
@@ -16,7 +16,7 @@ export class BlogService {
       take: +params.pageSize,
     });
   }
-  async createBlog(params: BlogPrismaGeneralDto) {
+  async createBlog(params: BlogUniversalDto) {
     return await this.prismService.blog.create({
       data: {
         title: params.title,
@@ -26,7 +26,7 @@ export class BlogService {
     });
   }
 
-  async updateBlogById(id: number, userId, paramas: BlogPrismaGeneralDto) {
+  async updateBlogById(id: number, userId, paramas: BlogUniversalDto) {
     return await this.prismService.blog.update({
       where: {
         id: id,

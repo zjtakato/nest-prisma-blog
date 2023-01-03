@@ -1,20 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 
-export class LoginSwaggerGeneralDto implements Partial<Prisma.UserUncheckedCreateInput> {
+export class UserUniversalDto implements Partial<Prisma.UserUncheckedCreateInput> {
   @ApiProperty({
     description: `账号 - '登录/注册'必传`,
     default: 'shuaigebie',
     required: false,
   })
-  account: string;
+  account?: string;
 
   @ApiProperty({
     description: `密码 - '登录/注册'必传`,
     default: '123456',
     required: false,
   })
-  password: string;
+  password?: string;
 
   @ApiProperty({
     description: `用户名 - '注册必传'`,
@@ -23,5 +23,3 @@ export class LoginSwaggerGeneralDto implements Partial<Prisma.UserUncheckedCreat
   })
   name?: string;
 }
-
-export interface UserPrismaGeneralDto extends Partial<Prisma.UserUncheckedCreateInput> {}

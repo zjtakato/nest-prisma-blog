@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 
-export class BlogSwaggerGeneralDto implements Partial<Prisma.BlogUncheckedCreateWithoutUserInput> {
+export class BlogUniversalDto implements Partial<Prisma.BlogUncheckedCreateInput> {
+  public userId?: number;
+
   @ApiProperty({
     description: `博客id - '更新/删除'必传`,
     default: 0,
@@ -22,5 +24,3 @@ export class BlogSwaggerGeneralDto implements Partial<Prisma.BlogUncheckedCreate
   })
   public content?: string;
 }
-
-export interface BlogPrismaGeneralDto extends Partial<Prisma.BlogUncheckedCreateInput> {}
