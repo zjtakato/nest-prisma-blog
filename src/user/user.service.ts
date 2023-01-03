@@ -1,8 +1,8 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Prisma } from '@prisma/client';
 import { Request } from 'express';
 import { PrismaService } from 'src/core/prisma/prisma.service';
+import { UserGeneralDto } from './index.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
@@ -24,12 +24,18 @@ export class UserService {
     });
   }
 
-  async register(parmas: Prisma.UserCreateInput) {
+  async register(parmas: UserGeneralDto) {
     const user = await this.getUserByAccount(parmas.account);
     if (user) {
       throw new Error('该用户已存在');
     }
-    const { id } = await this.prisma.user.create({ data: parmas });
+    const { id } = await this.prisma.user.create({
+      data: {
+        account: parmas.account,
+        password: parmas.password,
+        name: parmas.name,
+      },
+    });
     return id;
   }
 }
