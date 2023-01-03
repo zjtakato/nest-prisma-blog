@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { SearchPaginationBase } from 'types/index.dto';
 import { JwtAuthGuard } from 'middleware/jwtAuth.guard';
 import { ApiTags } from '@nestjs/swagger';
@@ -33,7 +33,7 @@ export class BlogController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('updateBlog')
+  @Put('updateBlog')
   async updateBlog(@Body() { id, ...body }: BlogDto, @State() state: StateDto) {
     await this.blogService.updateBlogById(id, state.id, body);
     return {
