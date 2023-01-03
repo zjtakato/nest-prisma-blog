@@ -9,7 +9,7 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // swagger
-  const optipns = new DocumentBuilder().setTitle('Blog example').setDescription('The Blog API description').setVersion('1.0').addTag('Blog').build();
+  const optipns = new DocumentBuilder().setTitle('Blog example').setDescription('The Blog API description').setVersion('1.0').build();
   const docuemnt = SwaggerModule.createDocument(app, optipns);
   SwaggerModule.setup('api', app, docuemnt);
 
