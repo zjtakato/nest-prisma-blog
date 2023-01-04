@@ -23,6 +23,9 @@ async function bootstrap() {
   // mount filter
   app.useGlobalFilters(new ExceptionFilter(configService));
 
+  // cors
+  env() !== 'prod' && app.enableCors();
+
   await app.listen(port).then(() => {
     console.log(`swagger running in http://localhost:${port}/api`);
     console.log(`server running in http://localhost:${port}`);
