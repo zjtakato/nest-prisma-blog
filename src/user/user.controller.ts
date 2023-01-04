@@ -14,8 +14,10 @@ export class UserController {
   async login(@Body() { account, password }: UserUniversalDto, @Res() res: Response) {
     const result = await this.userService.login(account, password);
     if (!result) throw new Error('账号或密码错误');
-    const blogAccessToken = this.jwtService.sign({ ...result });
-    res.cookie('blogAccessToken', blogAccessToken);
+    const token = this.jwtService.sign({ ...result });
+    res.cookie('token', token);
+    res.header('Access-Control-Expose-Headers', 'token');
+    res.header('token', token);
     res.json({
       ret: 0,
       msg: '登录成功',

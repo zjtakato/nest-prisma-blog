@@ -6,7 +6,7 @@ import { User } from '@prisma/client';
 import Config from 'config';
 
 interface CookiesDto {
-  blogAccessToken?: string;
+  token?: string;
 }
 
 @Injectable()
@@ -17,12 +17,11 @@ export class JwtAuthGuard implements CanActivate {
   }
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const request = ctx.switchToHttp().getRequest();
-    const { blogAccessToken } = request.cookies as CookiesDto;
+    const token = (request.cookies as CookiesDto).token || request.headers.token;
     try {
-      const state = this.jwtService.verify(blogAccessToken) as User;
+      const state = this.jwtService.verify(token) as User;
       request.state = state;
     } catch (error) {
-      console.log(error.stack);
       throw new Error('登录态异常');
     }
     // jwt验证
