@@ -21,7 +21,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // mount filter
-  app.useGlobalFilters(new ExceptionFilter(configService));
+  const expectionFilter = app.get(ExceptionFilter);
+  app.useGlobalFilters(expectionFilter);
 
   // cors
   env() !== 'prod' && app.enableCors();
