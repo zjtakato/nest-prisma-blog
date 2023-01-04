@@ -15,7 +15,10 @@ export class ExceptionFilter implements NestExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const status = exception?.getStatus ? exception.getStatus() : 500;
-    console.log(exception.stack);
+    if (status !== this.config.forbiddenStatus) {
+      // 非业务错误才打印stack
+      console.log(exception.stack);
+    }
     response.status(status).json({
       ret: -1,
       msg: this.config.env() !== 'prod' ? exception.message : 'error',

@@ -2,6 +2,7 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { ForbiddenException } from 'utils/forbidden.exception';
 import { UserUniversalDto } from './index.dto';
 import { UserService } from './user.service';
 
@@ -13,7 +14,7 @@ export class UserController {
   @Post('login')
   async login(@Body() { account, password }: UserUniversalDto, @Res() res: Response) {
     const result = await this.userService.login(account, password);
-    if (!result) throw new Error('账号或密码错误');
+    if (!result) throw new ForbiddenException('账号或密码错误');
     const token = this.jwtService.sign({ ...result });
     res.cookie('token', token);
     res.header('Access-Control-Expose-Headers', 'token');
