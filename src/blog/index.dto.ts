@@ -21,9 +21,9 @@ export class BlogUniversalDto implements Partial<Prisma.BlogUncheckedCreateInput
   })
   public title?: string;
 
-  /** 内容 - '新增/更新'必穿 */
+  /** 内容 - '新增/更新'必传 */
   @ApiProperty({
-    description: `内容 - '新增/更新'必穿`,
+    description: `内容 - '新增/更新'必传`,
     default: '这是标题',
     required: false,
   })
