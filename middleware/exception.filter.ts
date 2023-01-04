@@ -17,7 +17,7 @@ export class ExceptionFilter implements NestExceptionFilter {
     console.log(exception.stack);
     response.status(status).json({
       ret: -1,
-      msg: this.config.env !== 'production' ? exception.message : 'error',
+      msg: this.config.env() !== 'prod' ? exception.message : 'error',
     });
   }
 }

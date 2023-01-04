@@ -15,7 +15,7 @@ async function bootstrap() {
 
   // config
   const configService = app.get<ConfigService>(ConfigService);
-  const { port } = configService.get('config') as ConfigType<typeof Config>;
+  const { port, env } = configService.get('config') as ConfigType<typeof Config>;
 
   // parser cookies
   app.use(cookieParser());
