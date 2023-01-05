@@ -14,14 +14,14 @@ export class ExceptionFilter implements NestExceptionFilter {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
-    const status = exception?.getStatus ? exception.getStatus() : 500;
-    if (status !== this.config.forbiddenStatus) {
-      // 非业务错误才打印stack
-      console.log(exception.stack);
-    }
+    const status = exception?.getStatus ? exception.getStatus() : this.config.serverErrorStatus;
+    // 非业务错误才打印stack
+    status !== this.config.forbiddenStatus && console.log(exception.stack);
+    // 业务错误时把错误信息作为响应
+    const errorMessage = status === this.config.forbiddenStatus ? exception.message : this.config.serverErrorMessage;
     response.status(status).json({
       ret: -1,
-      msg: this.config.env() !== 'prod' ? exception.message : 'error',
+      msg: errorMessage,
     });
   }
 }

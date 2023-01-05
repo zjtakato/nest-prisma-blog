@@ -7,6 +7,8 @@ export default registerAs('config', () => {
     env: (): 'local' | 'prod' => {
       return (process.env.NODE_ENV as 'prod') || 'local';
     },
-    forbiddenStatus: 403, // 业务错误状态码(服务器理解请求客户端的请求，但是拒绝执行此请求)
+    forbiddenStatus: 403, // 业务错误状态码
+    serverErrorStatus: 500, // 服务器内部异常
+    serverErrorMessage: 'Internal Server Error',
   };
 });
