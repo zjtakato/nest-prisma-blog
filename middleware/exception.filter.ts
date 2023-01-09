@@ -1,14 +1,14 @@
 import { ArgumentsHost, ExceptionFilter as NestExceptionFilter, HttpException, Inject, Injectable } from '@nestjs/common';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { Request, Response } from 'express';
 import Config from '../config';
 
 @Injectable()
 export class ExceptionFilter implements NestExceptionFilter {
-  private readonly config: ConfigType<typeof Config>;
-  constructor(private readonly configService: ConfigService) {
-    this.config = configService.get('config');
-  }
+  constructor(
+    @Inject(Config.KEY)
+    private readonly config: ConfigType<typeof Config>,
+  ) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

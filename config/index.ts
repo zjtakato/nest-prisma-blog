@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config';
-export default registerAs('config', () => {
+
+const Config = registerAs('config', () => {
   return {
     port: 3000,
     jwtSecert: process.env.JWT_SECRET,
@@ -12,3 +13,5 @@ export default registerAs('config', () => {
     serverErrorMessage: 'Internal Server Error',
   };
 });
+
+export default Config;

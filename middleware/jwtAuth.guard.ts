@@ -1,20 +1,21 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { PrismaService } from 'core/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import Config from 'config';
-
 interface CookiesDto {
   token?: string;
 }
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  private readonly config: ConfigType<typeof Config>;
-  constructor(private readonly prismaService: PrismaService, private readonly configService: ConfigService, private readonly jwtService: JwtService) {
-    this.config = configService.get('config');
-  }
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(Config.KEY)
+    private readonly config: ConfigType<typeof Config>,
+    private readonly jwtService: JwtService,
+  ) {}
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const request = ctx.switchToHttp().getRequest();
     const token = (request.cookies as CookiesDto).token || request.headers.token;
