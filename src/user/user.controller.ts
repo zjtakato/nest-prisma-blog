@@ -1,20 +1,26 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpException, Inject, Post, Res } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { ForbiddenException } from 'utils/forbidden.exception';
 import { UserUniversalDto } from './index.dto';
 import { UserService } from './user.service';
+import Config from 'config';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    @Inject(Config.KEY)
+    private readonly config: ConfigType<typeof Config>,
+  ) {}
 
   @Post('login')
   async login(@Body() { account, password }: UserUniversalDto, @Res() res: Response) {
     const result = await this.userService.login(account, password);
-    if (!result) throw new ForbiddenException('账号或密码错误');
+    if (!result) throw new HttpException('账号或密码错误', this.config.forbiddenStatus);
     const token = this.jwtService.sign({ ...result });
     res.cookie('token', token);
     res.header('Access-Control-Expose-Headers', 'token');
