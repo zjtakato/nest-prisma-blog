@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { BlogModule } from './blog/blog.module';
 import { PrismaModule } from 'core/prisma/prisma.module';
 import { ExceptionFilter } from 'middleware/exception.filter';
+import { LibModule } from 'core/lib/lib.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ExceptionFilter } from 'middleware/exception.filter';
     UserModule,
     BlogModule,
     PrismaModule,
+    LibModule,
   ],
   controllers: [AppController],
   providers: [AppService, ExceptionFilter],
