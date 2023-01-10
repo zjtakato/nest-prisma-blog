@@ -47,6 +47,36 @@ export class RegisterValidatorDto {
   password: string;
 
   @IsString()
+  @IsNotEmpty({
+    message: '确认密码不能为空',
+  })
+  @ApiProperty({
+    description: '确认密码',
+    required: true,
+  })
+  confirmPassword: string;
+
+  @IsString()
+  @IsNotEmpty({
+    message: '验证码不能为空',
+  })
+  @ApiProperty({
+    description: '验证码',
+    required: true,
+  })
+  verifiCode: string;
+
+  @IsString()
+  @IsNotEmpty({
+    message: 'codeTicket不能为空',
+  })
+  @ApiProperty({
+    description: '验证码凭证',
+    required: true,
+  })
+  codeTicket: string;
+
+  @IsString()
   @IsOptional()
   name?: string;
 }

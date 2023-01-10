@@ -1,11 +1,13 @@
-import { Body, Controller, HttpException, Inject, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Inject, Post, Res } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { UserUniversalDto } from './index.dto';
+import { RegisterValidatorDto, UserUniversalDto } from './index.dto';
 import { UserService } from './user.service';
 import Config from 'config';
+import { LibService } from 'core/lib/lib.service';
+import * as svgCaptcha from 'svg-captcha';
 
 @ApiTags('user')
 @Controller('user')
@@ -15,6 +17,7 @@ export class UserController {
     private readonly jwtService: JwtService,
     @Inject(Config.KEY)
     private readonly config: ConfigType<typeof Config>,
+    private readonly libService: LibService,
   ) {}
 
   @Post('login')
@@ -32,12 +35,37 @@ export class UserController {
   }
 
   @Post('register')
-  async register(@Body() params: UserUniversalDto) {
+  async register(@Body() params: RegisterValidatorDto) {
+    // 校验两次密码是否一直
+    if (params.password !== params.confirmPassword) {
+      throw new HttpException('密码与确认密码不一致', this.config.forbiddenStatus);
+    }
+    // 校验验证码是否正确以及有效性
+    const validateSecretCodeResult = this.libService.validateCode(params.verifiCode, params.codeTicket);
+    if (validateSecretCodeResult === false) {
+      throw new HttpException('验证码无效', this.config.forbiddenStatus);
+    }
     const id = await this.userService.register(params);
     return {
       ret: 0,
       msg: '注册成功',
       data: { id },
+    };
+  }
+
+  @Get('getVerifiCode')
+  async getVerifiCode() {
+    const captcha = svgCaptcha.create({ height: 32 });
+    const code = captcha.text;
+    const encryptCode = this.libService.md5Decode(code); // 对验证码进行加密
+    const codeTicket = this.jwtService.sign({ encryptCode }); // 进行jwt加密
+    return {
+      ret: 0,
+      msg: 'success',
+      data: {
+        codeTicket,
+        svg: captcha.data,
+      },
     };
   }
 }
