@@ -36,7 +36,7 @@ export class UserController {
 
   @Post('register')
   async register(@Body() params: RegisterValidatorDto) {
-    // 校验两次密码是否一直
+    // 校验两次密码是否一致
     if (params.password !== params.confirmPassword) {
       throw new HttpException('密码与确认密码不一致', this.config.forbiddenStatus);
     }
