@@ -9,6 +9,7 @@ import { BlogModule } from './blog/blog.module';
 import { PrismaModule } from 'core/prisma/prisma.module';
 import { ExceptionFilter } from 'middleware/exception.filter';
 import { LibModule } from 'core/lib/lib.module';
+import { ValidationPipe } from 'middleware/validation.pipe';
 
 @Module({
   imports: [
@@ -36,6 +37,6 @@ import { LibModule } from 'core/lib/lib.module';
     LibModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ExceptionFilter],
+  providers: [AppService, ExceptionFilter, ValidationPipe],
 })
 export class AppModule {}

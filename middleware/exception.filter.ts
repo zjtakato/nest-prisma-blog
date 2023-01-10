@@ -15,10 +15,16 @@ export class ExceptionFilter implements NestExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const status = exception?.getStatus ? exception.getStatus() : this.config.serverErrorStatus;
-    // 非业务错误才打印stack
-    status !== this.config.forbiddenStatus && console.log(exception.stack);
-    // 业务错误时把错误信息作为响应
-    const errorMessage = status === this.config.forbiddenStatus ? exception.message : this.config.serverErrorMessage;
+    let errorMessage: string;
+    const stackWhiteList = [this.config.forbiddenStatus, this.config.badRequestStatus];
+    if (stackWhiteList.includes(status)) {
+      // 业务错误
+      errorMessage = exception.message;
+    } else {
+      // 代码错误
+      errorMessage = this.config.serverErrorMessage;
+      console.log(exception.stack);
+    }
     response.status(status).json({
       ret: -1,
       msg: errorMessage,

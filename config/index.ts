@@ -10,7 +10,9 @@ const Config = registerAs('config', () => {
     },
     forbiddenStatus: 403, // 业务错误状态码
     serverErrorStatus: 500, // 服务器内部异常
+    badRequestStatus: 400, // 参数错误状态码
     serverErrorMessage: 'Internal Server Error',
+    verifiCodeExpiresSecond: 90, // 验证码有效时间
   };
 });
 

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UserUniversalDto implements Partial<Prisma.UserUncheckedCreateInput> {
   @ApiProperty({
@@ -21,5 +22,31 @@ export class UserUniversalDto implements Partial<Prisma.UserUncheckedCreateInput
     default: '这是用户名',
     required: false,
   })
+  name?: string;
+}
+
+export class RegisterValidatorDto {
+  @IsString()
+  @IsNotEmpty({
+    message: 'account不能为空',
+  })
+  @ApiProperty({
+    description: '账号',
+    required: true,
+  })
+  account: string;
+
+  @IsString()
+  @IsNotEmpty({
+    message: 'password不能为空',
+  })
+  @ApiProperty({
+    description: '密码',
+    required: false,
+  })
+  password: string;
+
+  @IsString()
+  @IsOptional()
   name?: string;
 }

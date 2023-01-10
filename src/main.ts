@@ -5,6 +5,7 @@ import { ConfigService, ConfigType } from '@nestjs/config';
 import { ExceptionFilter } from 'middleware/exception.filter';
 import Config from '../config';
 import * as cookieParser from 'cookie-parser';
+import { ValidationPipe } from 'middleware/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +24,10 @@ async function bootstrap() {
   // mount filter
   const expectionFilter = app.get(ExceptionFilter);
   app.useGlobalFilters(expectionFilter);
+
+  // mount pipe
+  const validationPipe = app.get(ValidationPipe);
+  app.useGlobalPipes(validationPipe);
 
   // cors
   env() !== 'prod' && app.enableCors();
