@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import Config from '../config';
 import { JwtModule } from '@nestjs/jwt';
@@ -36,7 +34,6 @@ import { ValidationPipe } from 'middleware/validation.pipe';
     PrismaModule,
     LibModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, ExceptionFilter, ValidationPipe],
+  providers: [ExceptionFilter, ValidationPipe],
 })
 export class AppModule {}
