@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["extendedWhereUnique"]
 }
 
@@ -28,4 +28,14 @@ model Blog {
   User      User?     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "userId")
 
   @@index([userId], map: "userId_idx")
+}
+
+model Menu {
+  id    Int     @id @default(autoincrement())
+  label String  @db.VarChar(11)
+  key   String  @db.VarChar(45)
+  icon  String? @db.VarChar(45)
+  type  String? @db.VarChar(11)
+  pid   Int?    @default(0)
+  sort  Int     @default(1)
 }
