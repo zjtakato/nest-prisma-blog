@@ -14,7 +14,7 @@ export class SystemController {
   @Get('/getMenuList')
   async getMenuList() {
     const flatMenus = await this.systemService.getMenuList();
-    const treeMenus = this.libService.flatToNest<Prisma.MenuCreateInput>(flatMenus);
+    const treeMenus = this.libService.flatToNest<Prisma.MenuCreateInput>(flatMenus, { childrenEmptyIsNull: true });
     return {
       ret: 0,
       data: treeMenus,

@@ -61,21 +61,28 @@ export class LibService {
   /**
    * array to tree
    * @param list 扁平数据
-   * @param parentIdField  父id字段 默认为 id
-   * @param childIdField  子id字段 默认为 pid
-   * @param childField  chidlren字段名 默认为 children
+   * @param currentIdFieldName  id字段 默认为 id
+   * @param parentIdFieldName  关联到父级的id字段名 默认为 pid
+   * @param childFieldName  chidlren字段名 默认为 children
+   * @param childrenEmptyIsNull chidren为空数组时 是否置为null
    */
-  flatToNest<T, T2 = { chidlren: T }>(list: Array<T>, parentIdField = 'id', childIdField = 'pid', childField = 'children'): Array<Tree<T, T2>> {
+  flatToNest<T, T2 = { chidlren: T }>(
+    list: Array<T>,
+    options: { currentIdFieldName?: string; parentIdFieldName?: string; childFieldName?: string; childrenEmptyIsNull?: boolean },
+  ): Array<Tree<T, T2>> {
     const res = [];
     const map: Object = {};
-    const id = parentIdField;
-    const pid = childIdField;
-    const children = childField;
+    const defalutOptions = { currentIdFieldName: 'id', parentIdFieldName: 'pid', childFieldName: 'children', childrenEmptyIsNull: false };
+    const param = { ...defalutOptions, ...options };
+    const id = param.currentIdFieldName;
+    const pid = param.parentIdFieldName;
+    const childFieldName = param.childFieldName;
+    const childrenEmptyIsNull = param.childrenEmptyIsNull;
 
     for (const item of list) {
       map[item[id]] = {
         ...item,
-        [children]: map.hasOwnProperty(item[id]) ? map[item[id]] : [], // 如果pid先出现，但是map没有该pid的键值对
+        [childFieldName]: map.hasOwnProperty(item[id]) ? map[item[id]] : childrenEmptyIsNull ? null : [], // 如果pid先出现，但是map没有该pid的键值对
       };
       if (item[pid] === 0) {
         res.push(map[item[id]]);
@@ -83,13 +90,15 @@ export class LibService {
         if (!map.hasOwnProperty(item[pid])) {
           // 如果pid先出现，但是map没有该pid的键值对
           map[item[pid]] = {
-            [children]: [],
+            [childFieldName]: childrenEmptyIsNull ? null : [],
           };
         }
-        map[item[pid]][children].push(map[item[id]]);
+        if (childrenEmptyIsNull) {
+          map[item[pid]][childFieldName] = [];
+        }
+        map[item[pid]][childFieldName].push(map[item[id]]);
       }
     }
-    debugger;
     return res;
   }
 }
