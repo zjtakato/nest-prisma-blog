@@ -8,6 +8,7 @@ import { PrismaModule } from 'core/prisma/prisma.module';
 import { ExceptionFilter } from 'middleware/exception.filter';
 import { LibModule } from 'core/lib/lib.module';
 import { ValidationPipe } from 'middleware/validation.pipe';
+import { SystemModule } from './system/system.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ValidationPipe } from 'middleware/validation.pipe';
     BlogModule,
     PrismaModule,
     LibModule,
+    SystemModule,
   ],
   providers: [ExceptionFilter, ValidationPipe],
 })
