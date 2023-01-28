@@ -73,7 +73,7 @@ export class LibService {
     const children = childField;
 
     for (const item of list) {
-      map[id] = {
+      map[item[id]] = {
         ...item,
         [children]: map.hasOwnProperty(item[id]) ? map[item[id]] : [], // 如果pid先出现，但是map没有该pid的键值对
       };
@@ -89,6 +89,7 @@ export class LibService {
         map[item[pid]][children].push(map[item[id]]);
       }
     }
+    debugger;
     return res;
   }
 }
