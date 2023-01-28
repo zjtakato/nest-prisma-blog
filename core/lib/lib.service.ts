@@ -59,7 +59,7 @@ export class LibService {
   }
 
   /**
-   * array to tree
+   * 时间复杂度为O(n)的array to tree
    * @param list 扁平数据
    * @param currentIdFieldName  id字段 默认为 id
    * @param parentIdFieldName  关联到父级的id字段名 默认为 pid
