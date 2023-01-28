@@ -15,3 +15,7 @@ export class SearchPaginationBase {
   })
   pageSize?: string;
 }
+
+export type Tree<T1, T2> = {
+  [P in keyof T1]: T1[P];
+} & { [P in keyof T2]?: Array<Tree<T1, T2>> };
