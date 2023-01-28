@@ -16,7 +16,7 @@ export class ExceptionFilter implements NestExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception?.getStatus ? exception.getStatus() : this.config.serverErrorStatus;
     let errorMessage: string;
-    const stackWhiteList = [this.config.forbiddenStatus, this.config.badRequestStatus];
+    const stackWhiteList = [this.config.forbiddenStatus, this.config.badRequestStatus, this.config.unAuthorizedStatus];
     if (stackWhiteList.includes(status)) {
       // 业务错误
       errorMessage = exception.message;

@@ -23,7 +23,7 @@ export class JwtAuthGuard implements CanActivate {
       const state = this.jwtService.verify(token) as User;
       request.state = state;
     } catch (error) {
-      throw new HttpException('登录态异常', this.config.forbiddenStatus);
+      throw new HttpException('登录态异常', this.config.unAuthorizedStatus);
     }
     // jwt验证
     return true;
