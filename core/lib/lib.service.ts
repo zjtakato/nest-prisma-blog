@@ -3,6 +3,7 @@ import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as crybto from 'crypto';
 import Config from 'config';
+import { Tree } from 'types/index.dto';
 
 @Injectable()
 export class LibService {
@@ -55,5 +56,39 @@ export class LibService {
     const hash = crybto.createHash('md5');
     hash.update(decodeStr + secretKey);
     return hash.digest('base64');
+  }
+
+  /**
+   * array to tree
+   * @param list 扁平数据
+   * @param parentIdField  父id字段 默认为 id
+   * @param childIdField  子id字段 默认为 pid
+   * @param childField  chidlren字段名 默认为 children
+   */
+  flatToNest<T, T2 = { chidlren: T }>(list: Array<T>, parentIdField = 'id', childIdField = 'pid', childField = 'children'): Array<Tree<T, T2>> {
+    const res = [];
+    const map: Object = {};
+    const id = parentIdField;
+    const pid = childIdField;
+    const children = childField;
+
+    for (const item of list) {
+      map[id] = {
+        ...item,
+        [children]: map.hasOwnProperty(item[id]) ? map[item[id]] : [], // 如果pid先出现，但是map没有该pid的键值对
+      };
+      if (item[pid] === 0) {
+        res.push(map[item[id]]);
+      } else {
+        if (!map.hasOwnProperty(item[pid])) {
+          // 如果pid先出现，但是map没有该pid的键值对
+          map[item[pid]] = {
+            [children]: [],
+          };
+        }
+        map[item[pid]][children].push(map[item[id]]);
+      }
+    }
+    return res;
   }
 }
