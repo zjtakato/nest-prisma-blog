@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, HttpException, Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PrismaService } from 'core/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
@@ -23,7 +23,7 @@ export class JwtAuthGuard implements CanActivate {
       const state = this.jwtService.verify(token) as User;
       request.state = state;
     } catch (error) {
-      throw new Error('登录态异常');
+      throw new HttpException('登录态异常', this.config.forbiddenStatus);
     }
     // jwt验证
     return true;
